@@ -1,3 +1,4 @@
+# Route Tables for Public Subnets
 resource "aws_route_table" "public" {
   vpc_id = var.vpc_id
   route {
@@ -13,6 +14,7 @@ resource "aws_route_table_association" "public" {
   route_table_id = aws_route_table.public.id
 }
 
+# Route Tables for Public Subnets
 resource "aws_route_table" "private" {
   vpc_id = var.vpc_id
   route {

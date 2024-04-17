@@ -20,6 +20,7 @@ locals {
   newbits = tonumber(var.subnet_size) - 16  # Adjust according to your VPC CIDR block
 }
 
+# Public Subnets
 resource "aws_subnet" "public" {
   count = var.subnet_count
   vpc_id = var.vpc_id
@@ -32,6 +33,7 @@ resource "aws_subnet" "public" {
   }
 }
 
+# Private Subnets
 resource "aws_subnet" "private" {
   count = var.subnet_count
   vpc_id = var.vpc_id
