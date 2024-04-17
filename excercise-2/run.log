@@ -2,7 +2,6 @@ p@l440:~/terraform-aws/excercise-2$ terraform init
 
 Initializing the backend...
 Initializing modules...
-- s3_backup in modules/s3_backup
 
 Initializing provider plugins...
 - Reusing previous version of hashicorp/aws from the dependency lock file
@@ -128,3 +127,4 @@ Plan: 6 to add, 0 to change, 0 to destroy.
 
 Note: You didn't use the -out option to save this plan, so Terraform can't guarantee to take exactly these actions if you run "terraform apply" now.
 p@l440:~/terraform-aws/excercise-2$
+
