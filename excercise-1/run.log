@@ -18,35 +18,13 @@ If you ever set or change modules or backend configuration for Terraform,
 rerun this command to reinitialize your working directory. If you forget, other
 commands will detect it and remind you to do so if necessary.
 p@l440:~/terraform-aws/excercise-1$ terraform plan
-module.example_vpcs.data.aws_region.current_aws_region: Reading...
-module.example_vpcs.data.aws_region.current_aws_region: Read complete after 0s [id=us-east-1]
 
 Terraform used the selected providers to generate the following execution plan. Resource actions are indicated with the following symbols:
   + create
 
 Terraform will perform the following actions:
 
-  # module.example_vpcs.aws_eip.nat will be created
-  + resource "aws_eip" "nat" {
-      + allocation_id        = (known after apply)
-      + association_id       = (known after apply)
-      + carrier_ip           = (known after apply)
-      + customer_owned_ip    = (known after apply)
-      + domain               = "vpc"
-      + id                   = (known after apply)
-      + instance             = (known after apply)
-      + network_border_group = (known after apply)
-      + network_interface    = (known after apply)
-      + private_dns          = (known after apply)
-      + private_ip           = (known after apply)
-      + public_dns           = (known after apply)
-      + public_ip            = (known after apply)
-      + public_ipv4_pool     = (known after apply)
-      + tags_all             = (known after apply)
-      + vpc                  = (known after apply)
-    }
-
-  # module.example_vpcs.aws_internet_gateway.gw will be created
+  # module.network.module.internet_gateway.aws_internet_gateway.gw will be created
   + resource "aws_internet_gateway" "gw" {
       + arn      = (known after apply)
       + id       = (known after apply)
@@ -60,7 +38,27 @@ Terraform will perform the following actions:
       + vpc_id   = (known after apply)
     }
 
-  # module.example_vpcs.aws_nat_gateway.nat will be created
+  # module.network.module.nat_gateway.aws_eip.nat will be created
+  + resource "aws_eip" "nat" {
+      + allocation_id        = (known after apply)
+      + association_id       = (known after apply)
+      + carrier_ip           = (known after apply)
+      + customer_owned_ip    = (known after apply)
+      + domain               = (known after apply)
+      + id                   = (known after apply)
+      + instance             = (known after apply)
+      + network_border_group = (known after apply)
+      + network_interface    = (known after apply)
+      + private_dns          = (known after apply)
+      + private_ip           = (known after apply)
+      + public_dns           = (known after apply)
+      + public_ip            = (known after apply)
+      + public_ipv4_pool     = (known after apply)
+      + tags_all             = (known after apply)
+      + vpc                  = true
+    }
+
+  # module.network.module.nat_gateway.aws_nat_gateway.nat will be created
   + resource "aws_nat_gateway" "nat" {
       + allocation_id                      = (known after apply)
       + association_id                     = (known after apply)
@@ -75,7 +73,7 @@ Terraform will perform the following actions:
       + tags_all                           = (known after apply)
     }
 
-  # module.example_vpcs.aws_route_table.private will be created
+  # module.network.module.route_tables.aws_route_table.private will be created
   + resource "aws_route_table" "private" {
       + arn              = (known after apply)
       + id               = (known after apply)
@@ -88,16 +86,11 @@ Terraform will perform the following actions:
                 # (11 unchanged attributes hidden)
             },
         ]
-      + tags             = {
-          + "Name" = "example-private-rt"
-        }
-      + tags_all         = {
-          + "Name" = "example-private-rt"
-        }
+      + tags_all         = (known after apply)
       + vpc_id           = (known after apply)
     }
 
-  # module.example_vpcs.aws_route_table.public will be created
+  # module.network.module.route_tables.aws_route_table.public will be created
   + resource "aws_route_table" "public" {
       + arn              = (known after apply)
       + id               = (known after apply)
@@ -110,50 +103,45 @@ Terraform will perform the following actions:
                 # (11 unchanged attributes hidden)
             },
         ]
-      + tags             = {
-          + "Name" = "example-public-rt"
-        }
-      + tags_all         = {
-          + "Name" = "example-public-rt"
-        }
+      + tags_all         = (known after apply)
       + vpc_id           = (known after apply)
     }
 
-  # module.example_vpcs.aws_route_table_association.private[0] will be created
+  # module.network.module.route_tables.aws_route_table_association.private[0] will be created
   + resource "aws_route_table_association" "private" {
       + id             = (known after apply)
       + route_table_id = (known after apply)
       + subnet_id      = (known after apply)
     }
 
-  # module.example_vpcs.aws_route_table_association.private[1] will be created
+  # module.network.module.route_tables.aws_route_table_association.private[1] will be created
   + resource "aws_route_table_association" "private" {
       + id             = (known after apply)
       + route_table_id = (known after apply)
       + subnet_id      = (known after apply)
     }
 
-  # module.example_vpcs.aws_route_table_association.public[0] will be created
+  # module.network.module.route_tables.aws_route_table_association.public[0] will be created
   + resource "aws_route_table_association" "public" {
       + id             = (known after apply)
       + route_table_id = (known after apply)
       + subnet_id      = (known after apply)
     }
 
-  # module.example_vpcs.aws_route_table_association.public[1] will be created
+  # module.network.module.route_tables.aws_route_table_association.public[1] will be created
   + resource "aws_route_table_association" "public" {
       + id             = (known after apply)
       + route_table_id = (known after apply)
       + subnet_id      = (known after apply)
     }
 
-  # module.example_vpcs.aws_subnet.private[0] will be created
+  # module.network.module.subnets.aws_subnet.private[0] will be created
   + resource "aws_subnet" "private" {
       + arn                                            = (known after apply)
       + assign_ipv6_address_on_creation                = false
       + availability_zone                              = "us-east-1a"
       + availability_zone_id                           = (known after apply)
-      + cidr_block                                     = "10.0.2.0/24"
+      + cidr_block                                     = "10.10.12.0/24"
       + enable_dns64                                   = false
       + enable_resource_name_dns_a_record_on_launch    = false
       + enable_resource_name_dns_aaaa_record_on_launch = false
@@ -172,13 +160,13 @@ Terraform will perform the following actions:
       + vpc_id                                         = (known after apply)
     }
 
-  # module.example_vpcs.aws_subnet.private[1] will be created
+  # module.network.module.subnets.aws_subnet.private[1] will be created
   + resource "aws_subnet" "private" {
       + arn                                            = (known after apply)
       + assign_ipv6_address_on_creation                = false
       + availability_zone                              = "us-east-1b"
       + availability_zone_id                           = (known after apply)
-      + cidr_block                                     = "10.0.3.0/24"
+      + cidr_block                                     = "10.10.13.0/24"
       + enable_dns64                                   = false
       + enable_resource_name_dns_a_record_on_launch    = false
       + enable_resource_name_dns_aaaa_record_on_launch = false
@@ -197,13 +185,13 @@ Terraform will perform the following actions:
       + vpc_id                                         = (known after apply)
     }
 
-  # module.example_vpcs.aws_subnet.public[0] will be created
+  # module.network.module.subnets.aws_subnet.public[0] will be created
   + resource "aws_subnet" "public" {
       + arn                                            = (known after apply)
       + assign_ipv6_address_on_creation                = false
       + availability_zone                              = "us-east-1a"
       + availability_zone_id                           = (known after apply)
-      + cidr_block                                     = "10.0.0.0/24"
+      + cidr_block                                     = "10.10.10.0/24"
       + enable_dns64                                   = false
       + enable_resource_name_dns_a_record_on_launch    = false
       + enable_resource_name_dns_aaaa_record_on_launch = false
@@ -222,13 +210,13 @@ Terraform will perform the following actions:
       + vpc_id                                         = (known after apply)
     }
 
-  # module.example_vpcs.aws_subnet.public[1] will be created
+  # module.network.module.subnets.aws_subnet.public[1] will be created
   + resource "aws_subnet" "public" {
       + arn                                            = (known after apply)
       + assign_ipv6_address_on_creation                = false
       + availability_zone                              = "us-east-1b"
       + availability_zone_id                           = (known after apply)
-      + cidr_block                                     = "10.0.1.0/24"
+      + cidr_block                                     = "10.10.11.0/24"
       + enable_dns64                                   = false
       + enable_resource_name_dns_a_record_on_launch    = false
       + enable_resource_name_dns_aaaa_record_on_launch = false
@@ -247,10 +235,10 @@ Terraform will perform the following actions:
       + vpc_id                                         = (known after apply)
     }
 
-  # module.example_vpcs.aws_vpc.main will be created
+  # module.network.module.vpc.aws_vpc.main will be created
   + resource "aws_vpc" "main" {
       + arn                                  = (known after apply)
-      + cidr_block                           = "10.0.0.0/16"
+      + cidr_block                           = "10.10.0.0/16"
       + default_network_acl_id               = (known after apply)
       + default_route_table_id               = (known after apply)
       + default_security_group_id            = (known after apply)
@@ -273,7 +261,7 @@ Terraform will perform the following actions:
         }
     }
 
-  # module.example_vpcs.aws_vpc_endpoint.s3 will be created
+  # module.network.module.vpc_endpoint.aws_vpc_endpoint.s3 will be created
   + resource "aws_vpc_endpoint" "s3" {
       + arn                   = (known after apply)
       + cidr_blocks           = (known after apply)
@@ -282,20 +270,7 @@ Terraform will perform the following actions:
       + ip_address_type       = (known after apply)
       + network_interface_ids = (known after apply)
       + owner_id              = (known after apply)
-      + policy                = jsonencode(
-            {
-              + Statement = [
-                  + {
-                      + Action    = "s3:*"
-                      + Effect    = "Allow"
-                      + Principal = "*"
-                      + Resource  = [
-                          + "arn:aws:s3:::*",
-                        ]
-                    },
-                ]
-            }
-        )
+      + policy                = (known after apply)
       + prefix_list_id        = (known after apply)
       + private_dns_enabled   = false
       + requester_managed     = (known after apply)
@@ -310,40 +285,29 @@ Terraform will perform the following actions:
     }
 
 Plan: 15 to add, 0 to change, 0 to destroy.
+╷
+│ Warning: Argument is deprecated
+│
+│   with module.network.module.nat_gateway.aws_eip.nat,
+│   on modules/nat_gateway/main.tf line 2, in resource "aws_eip" "nat":
+│    2:   vpc = true
+│
+│ use domain attribute instead
+│
+│ (and one more similar warning elsewhere)
+╵
 
 ────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────
 
 Note: You didn't use the -out option to save this plan, so Terraform can't guarantee to take exactly these actions if you run "terraform apply" now.
 p@l440:~/terraform-aws/excercise-1$ terraform apply
-module.example_vpcs.data.aws_region.current_aws_region: Reading...
-module.example_vpcs.data.aws_region.current_aws_region: Read complete after 0s [id=us-east-1]
 
 Terraform used the selected providers to generate the following execution plan. Resource actions are indicated with the following symbols:
   + create
 
 Terraform will perform the following actions:
 
-  # module.example_vpcs.aws_eip.nat will be created
-  + resource "aws_eip" "nat" {
-      + allocation_id        = (known after apply)
-      + association_id       = (known after apply)
-      + carrier_ip           = (known after apply)
-      + customer_owned_ip    = (known after apply)
-      + domain               = "vpc"
-      + id                   = (known after apply)
-      + instance             = (known after apply)
-      + network_border_group = (known after apply)
-      + network_interface    = (known after apply)
-      + private_dns          = (known after apply)
-      + private_ip           = (known after apply)
-      + public_dns           = (known after apply)
-      + public_ip            = (known after apply)
-      + public_ipv4_pool     = (known after apply)
-      + tags_all             = (known after apply)
-      + vpc                  = (known after apply)
-    }
-
-  # module.example_vpcs.aws_internet_gateway.gw will be created
+  # module.network.module.internet_gateway.aws_internet_gateway.gw will be created
   + resource "aws_internet_gateway" "gw" {
       + arn      = (known after apply)
       + id       = (known after apply)
@@ -357,7 +321,27 @@ Terraform will perform the following actions:
       + vpc_id   = (known after apply)
     }
 
-  # module.example_vpcs.aws_nat_gateway.nat will be created
+  # module.network.module.nat_gateway.aws_eip.nat will be created
+  + resource "aws_eip" "nat" {
+      + allocation_id        = (known after apply)
+      + association_id       = (known after apply)
+      + carrier_ip           = (known after apply)
+      + customer_owned_ip    = (known after apply)
+      + domain               = (known after apply)
+      + id                   = (known after apply)
+      + instance             = (known after apply)
+      + network_border_group = (known after apply)
+      + network_interface    = (known after apply)
+      + private_dns          = (known after apply)
+      + private_ip           = (known after apply)
+      + public_dns           = (known after apply)
+      + public_ip            = (known after apply)
+      + public_ipv4_pool     = (known after apply)
+      + tags_all             = (known after apply)
+      + vpc                  = true
+    }
+
+  # module.network.module.nat_gateway.aws_nat_gateway.nat will be created
   + resource "aws_nat_gateway" "nat" {
       + allocation_id                      = (known after apply)
       + association_id                     = (known after apply)
@@ -372,7 +356,7 @@ Terraform will perform the following actions:
       + tags_all                           = (known after apply)
     }
 
-  # module.example_vpcs.aws_route_table.private will be created
+  # module.network.module.route_tables.aws_route_table.private will be created
   + resource "aws_route_table" "private" {
       + arn              = (known after apply)
       + id               = (known after apply)
@@ -385,16 +369,11 @@ Terraform will perform the following actions:
                 # (11 unchanged attributes hidden)
             },
         ]
-      + tags             = {
-          + "Name" = "example-private-rt"
-        }
-      + tags_all         = {
-          + "Name" = "example-private-rt"
-        }
+      + tags_all         = (known after apply)
       + vpc_id           = (known after apply)
     }
 
-  # module.example_vpcs.aws_route_table.public will be created
+  # module.network.module.route_tables.aws_route_table.public will be created
   + resource "aws_route_table" "public" {
       + arn              = (known after apply)
       + id               = (known after apply)
@@ -407,50 +386,45 @@ Terraform will perform the following actions:
                 # (11 unchanged attributes hidden)
             },
         ]
-      + tags             = {
-          + "Name" = "example-public-rt"
-        }
-      + tags_all         = {
-          + "Name" = "example-public-rt"
-        }
+      + tags_all         = (known after apply)
       + vpc_id           = (known after apply)
     }
 
-  # module.example_vpcs.aws_route_table_association.private[0] will be created
+  # module.network.module.route_tables.aws_route_table_association.private[0] will be created
   + resource "aws_route_table_association" "private" {
       + id             = (known after apply)
       + route_table_id = (known after apply)
       + subnet_id      = (known after apply)
     }
 
-  # module.example_vpcs.aws_route_table_association.private[1] will be created
+  # module.network.module.route_tables.aws_route_table_association.private[1] will be created
   + resource "aws_route_table_association" "private" {
       + id             = (known after apply)
       + route_table_id = (known after apply)
       + subnet_id      = (known after apply)
     }
 
-  # module.example_vpcs.aws_route_table_association.public[0] will be created
+  # module.network.module.route_tables.aws_route_table_association.public[0] will be created
   + resource "aws_route_table_association" "public" {
       + id             = (known after apply)
       + route_table_id = (known after apply)
       + subnet_id      = (known after apply)
     }
 
-  # module.example_vpcs.aws_route_table_association.public[1] will be created
+  # module.network.module.route_tables.aws_route_table_association.public[1] will be created
   + resource "aws_route_table_association" "public" {
       + id             = (known after apply)
       + route_table_id = (known after apply)
       + subnet_id      = (known after apply)
     }
 
-  # module.example_vpcs.aws_subnet.private[0] will be created
+  # module.network.module.subnets.aws_subnet.private[0] will be created
   + resource "aws_subnet" "private" {
       + arn                                            = (known after apply)
       + assign_ipv6_address_on_creation                = false
       + availability_zone                              = "us-east-1a"
       + availability_zone_id                           = (known after apply)
-      + cidr_block                                     = "10.0.2.0/24"
+      + cidr_block                                     = "10.10.12.0/24"
       + enable_dns64                                   = false
       + enable_resource_name_dns_a_record_on_launch    = false
       + enable_resource_name_dns_aaaa_record_on_launch = false
@@ -469,13 +443,13 @@ Terraform will perform the following actions:
       + vpc_id                                         = (known after apply)
     }
 
-  # module.example_vpcs.aws_subnet.private[1] will be created
+  # module.network.module.subnets.aws_subnet.private[1] will be created
   + resource "aws_subnet" "private" {
       + arn                                            = (known after apply)
       + assign_ipv6_address_on_creation                = false
       + availability_zone                              = "us-east-1b"
       + availability_zone_id                           = (known after apply)
-      + cidr_block                                     = "10.0.3.0/24"
+      + cidr_block                                     = "10.10.13.0/24"
       + enable_dns64                                   = false
       + enable_resource_name_dns_a_record_on_launch    = false
       + enable_resource_name_dns_aaaa_record_on_launch = false
@@ -494,13 +468,13 @@ Terraform will perform the following actions:
       + vpc_id                                         = (known after apply)
     }
 
-  # module.example_vpcs.aws_subnet.public[0] will be created
+  # module.network.module.subnets.aws_subnet.public[0] will be created
   + resource "aws_subnet" "public" {
       + arn                                            = (known after apply)
       + assign_ipv6_address_on_creation                = false
       + availability_zone                              = "us-east-1a"
       + availability_zone_id                           = (known after apply)
-      + cidr_block                                     = "10.0.0.0/24"
+      + cidr_block                                     = "10.10.10.0/24"
       + enable_dns64                                   = false
       + enable_resource_name_dns_a_record_on_launch    = false
       + enable_resource_name_dns_aaaa_record_on_launch = false
@@ -519,13 +493,13 @@ Terraform will perform the following actions:
       + vpc_id                                         = (known after apply)
     }
 
-  # module.example_vpcs.aws_subnet.public[1] will be created
+  # module.network.module.subnets.aws_subnet.public[1] will be created
   + resource "aws_subnet" "public" {
       + arn                                            = (known after apply)
       + assign_ipv6_address_on_creation                = false
       + availability_zone                              = "us-east-1b"
       + availability_zone_id                           = (known after apply)
-      + cidr_block                                     = "10.0.1.0/24"
+      + cidr_block                                     = "10.10.11.0/24"
       + enable_dns64                                   = false
       + enable_resource_name_dns_a_record_on_launch    = false
       + enable_resource_name_dns_aaaa_record_on_launch = false
@@ -544,10 +518,10 @@ Terraform will perform the following actions:
       + vpc_id                                         = (known after apply)
     }
 
-  # module.example_vpcs.aws_vpc.main will be created
+  # module.network.module.vpc.aws_vpc.main will be created
   + resource "aws_vpc" "main" {
       + arn                                  = (known after apply)
-      + cidr_block                           = "10.0.0.0/16"
+      + cidr_block                           = "10.10.0.0/16"
       + default_network_acl_id               = (known after apply)
       + default_route_table_id               = (known after apply)
       + default_security_group_id            = (known after apply)
@@ -570,7 +544,7 @@ Terraform will perform the following actions:
         }
     }
 
-  # module.example_vpcs.aws_vpc_endpoint.s3 will be created
+  # module.network.module.vpc_endpoint.aws_vpc_endpoint.s3 will be created
   + resource "aws_vpc_endpoint" "s3" {
       + arn                   = (known after apply)
       + cidr_blocks           = (known after apply)
@@ -579,20 +553,7 @@ Terraform will perform the following actions:
       + ip_address_type       = (known after apply)
       + network_interface_ids = (known after apply)
       + owner_id              = (known after apply)
-      + policy                = jsonencode(
-            {
-              + Statement = [
-                  + {
-                      + Action    = "s3:*"
-                      + Effect    = "Allow"
-                      + Principal = "*"
-                      + Resource  = [
-                          + "arn:aws:s3:::*",
-                        ]
-                    },
-                ]
-            }
-        )
+      + policy                = (known after apply)
       + prefix_list_id        = (known after apply)
       + private_dns_enabled   = false
       + requester_managed     = (known after apply)
@@ -607,6 +568,17 @@ Terraform will perform the following actions:
     }
 
 Plan: 15 to add, 0 to change, 0 to destroy.
+╷
+│ Warning: Argument is deprecated
+│
+│   with module.network.module.nat_gateway.aws_eip.nat,
+│   on modules/nat_gateway/main.tf line 2, in resource "aws_eip" "nat":
+│    2:   vpc = true
+│
+│ use domain attribute instead
+│
+│ (and one more similar warning elsewhere)
+╵
 
 Do you want to perform these actions?
   Terraform will perform the actions described above.
@@ -614,100 +586,86 @@ Do you want to perform these actions?
 
   Enter a value: yes
 
-module.example_vpcs.aws_eip.nat: Creating...
-module.example_vpcs.aws_vpc.main: Creating...
-module.example_vpcs.aws_eip.nat: Creation complete after 1s [id=eipalloc-07f158d6cc0e19100]
-module.example_vpcs.aws_vpc.main: Still creating... [10s elapsed]
-module.example_vpcs.aws_vpc.main: Creation complete after 13s [id=vpc-0866690d6d7a2d7da]
-module.example_vpcs.aws_internet_gateway.gw: Creating...
-module.example_vpcs.aws_subnet.public[0]: Creating...
-module.example_vpcs.aws_subnet.public[1]: Creating...
-module.example_vpcs.aws_subnet.private[1]: Creating...
-module.example_vpcs.aws_subnet.private[0]: Creating...
-module.example_vpcs.aws_internet_gateway.gw: Creation complete after 1s [id=igw-0bf773c3c16c006ca]
-module.example_vpcs.aws_route_table.public: Creating...
-module.example_vpcs.aws_subnet.private[0]: Creation complete after 1s [id=subnet-0d35927726b1e4711]
-module.example_vpcs.aws_subnet.private[1]: Creation complete after 1s [id=subnet-042bc39f8c88fa25d]
-module.example_vpcs.aws_route_table.public: Creation complete after 2s [id=rtb-0787bc15d5135a2fd]
-module.example_vpcs.aws_subnet.public[0]: Still creating... [10s elapsed]
-module.example_vpcs.aws_subnet.public[1]: Still creating... [10s elapsed]
-module.example_vpcs.aws_subnet.public[0]: Creation complete after 11s [id=subnet-02776892c7bb70955]
-module.example_vpcs.aws_nat_gateway.nat: Creating...
-module.example_vpcs.aws_subnet.public[1]: Creation complete after 12s [id=subnet-073cdcb2459d59ad8]
-module.example_vpcs.aws_route_table_association.public[1]: Creating...
-module.example_vpcs.aws_route_table_association.public[0]: Creating...
-module.example_vpcs.aws_route_table_association.public[0]: Creation complete after 0s [id=rtbassoc-0c14b5107352f1af2]
-module.example_vpcs.aws_route_table_association.public[1]: Creation complete after 0s [id=rtbassoc-09c76e0008a6ecf15]
-module.example_vpcs.aws_nat_gateway.nat: Still creating... [10s elapsed]
-module.example_vpcs.aws_nat_gateway.nat: Still creating... [20s elapsed]
-module.example_vpcs.aws_nat_gateway.nat: Still creating... [30s elapsed]
-module.example_vpcs.aws_nat_gateway.nat: Still creating... [40s elapsed]
-module.example_vpcs.aws_nat_gateway.nat: Still creating... [50s elapsed]
-module.example_vpcs.aws_nat_gateway.nat: Still creating... [1m0s elapsed]
-module.example_vpcs.aws_nat_gateway.nat: Still creating... [1m10s elapsed]
-module.example_vpcs.aws_nat_gateway.nat: Still creating... [1m20s elapsed]
-module.example_vpcs.aws_nat_gateway.nat: Still creating... [1m30s elapsed]
-module.example_vpcs.aws_nat_gateway.nat: Still creating... [1m40s elapsed]
-module.example_vpcs.aws_nat_gateway.nat: Still creating... [1m50s elapsed]
-module.example_vpcs.aws_nat_gateway.nat: Still creating... [2m0s elapsed]
-module.example_vpcs.aws_nat_gateway.nat: Creation complete after 2m6s [id=nat-00d2eb25e6aedc519]
-module.example_vpcs.aws_route_table.private: Creating...
-module.example_vpcs.aws_route_table.private: Creation complete after 2s [id=rtb-0705cda7fc002ac6e]
-module.example_vpcs.aws_route_table_association.private[1]: Creating...
-module.example_vpcs.aws_route_table_association.private[0]: Creating...
-module.example_vpcs.aws_vpc_endpoint.s3: Creating...
-module.example_vpcs.aws_route_table_association.private[1]: Creation complete after 1s [id=rtbassoc-0d22da809a1987176]
-module.example_vpcs.aws_route_table_association.private[0]: Creation complete after 1s [id=rtbassoc-0da5d2e2b0664d127]
-module.example_vpcs.aws_vpc_endpoint.s3: Creation complete after 6s [id=vpce-06b18f2f262e0b199]
+module.network.module.nat_gateway.aws_eip.nat: Creating...
+module.network.module.vpc.aws_vpc.main: Creating...
+module.network.module.nat_gateway.aws_eip.nat: Creation complete after 1s [id=eipalloc-09e04c4ff3c4bbb56]
+module.network.module.vpc.aws_vpc.main: Still creating... [10s elapsed]
+module.network.module.vpc.aws_vpc.main: Creation complete after 13s [id=vpc-092aec105bb519182]
+module.network.module.internet_gateway.aws_internet_gateway.gw: Creating...
+module.network.module.subnets.aws_subnet.private[0]: Creating...
+module.network.module.subnets.aws_subnet.private[1]: Creating...
+module.network.module.subnets.aws_subnet.public[1]: Creating...
+module.network.module.subnets.aws_subnet.public[0]: Creating...
+module.network.module.internet_gateway.aws_internet_gateway.gw: Creation complete after 1s [id=igw-0a07f6f95761d13fe]
+module.network.module.route_tables.aws_route_table.public: Creating...
+module.network.module.subnets.aws_subnet.private[0]: Creation complete after 1s [id=subnet-09a64346859d45141]
+module.network.module.subnets.aws_subnet.private[1]: Creation complete after 1s [id=subnet-07fc2275871ad6047]
+module.network.module.route_tables.aws_route_table.public: Creation complete after 1s [id=rtb-0f23812667f3bd5e2]
+module.network.module.subnets.aws_subnet.public[1]: Still creating... [10s elapsed]
+module.network.module.subnets.aws_subnet.public[0]: Still creating... [10s elapsed]
+module.network.module.subnets.aws_subnet.public[1]: Creation complete after 11s [id=subnet-08a7b6aae08953dbb]
+module.network.module.subnets.aws_subnet.public[0]: Creation complete after 11s [id=subnet-0677d2c42fea6169c]
+module.network.module.route_tables.aws_route_table_association.public[0]: Creating...
+module.network.module.route_tables.aws_route_table_association.public[1]: Creating...
+module.network.module.nat_gateway.aws_nat_gateway.nat: Creating...
+module.network.module.route_tables.aws_route_table_association.public[1]: Creation complete after 0s [id=rtbassoc-0b114245494a90d86]
+module.network.module.route_tables.aws_route_table_association.public[0]: Creation complete after 0s [id=rtbassoc-025f3b8ea86ce4d30]
+module.network.module.nat_gateway.aws_nat_gateway.nat: Still creating... [10s elapsed]
+module.network.module.nat_gateway.aws_nat_gateway.nat: Still creating... [20s elapsed]
+module.network.module.nat_gateway.aws_nat_gateway.nat: Still creating... [30s elapsed]
+module.network.module.nat_gateway.aws_nat_gateway.nat: Still creating... [40s elapsed]
+module.network.module.nat_gateway.aws_nat_gateway.nat: Still creating... [50s elapsed]
+module.network.module.nat_gateway.aws_nat_gateway.nat: Still creating... [1m0s elapsed]
+module.network.module.nat_gateway.aws_nat_gateway.nat: Still creating... [1m10s elapsed]
+module.network.module.nat_gateway.aws_nat_gateway.nat: Still creating... [1m20s elapsed]
+module.network.module.nat_gateway.aws_nat_gateway.nat: Still creating... [1m30s elapsed]
+module.network.module.nat_gateway.aws_nat_gateway.nat: Still creating... [1m40s elapsed]
+module.network.module.nat_gateway.aws_nat_gateway.nat: Creation complete after 1m45s [id=nat-09a7cf438f6f50800]
+module.network.module.route_tables.aws_route_table.private: Creating...
+module.network.module.route_tables.aws_route_table.private: Creation complete after 2s [id=rtb-0b3f53e55e0f2b5d5]
+module.network.module.route_tables.aws_route_table_association.private[1]: Creating...
+module.network.module.route_tables.aws_route_table_association.private[0]: Creating...
+module.network.module.vpc_endpoint.aws_vpc_endpoint.s3: Creating...
+module.network.module.route_tables.aws_route_table_association.private[0]: Creation complete after 1s [id=rtbassoc-00e57e8bb052132aa]
+module.network.module.route_tables.aws_route_table_association.private[1]: Creation complete after 1s [id=rtbassoc-01658a4f38bf09ea6]
+module.network.module.vpc_endpoint.aws_vpc_endpoint.s3: Creation complete after 7s [id=vpce-092b6588ee6266856]
+╷
+│ Warning: Argument is deprecated
+│
+│   with module.network.module.nat_gateway.aws_eip.nat,
+│   on modules/nat_gateway/main.tf line 2, in resource "aws_eip" "nat":
+│    2:   vpc = true
+│
+│ use domain attribute instead
+╵
 
 Apply complete! Resources: 15 added, 0 changed, 0 destroyed.
 p@l440:~/terraform-aws/excercise-1$ terraform destroy
-module.example_vpcs.data.aws_region.current_aws_region: Reading...
-module.example_vpcs.aws_eip.nat: Refreshing state... [id=eipalloc-07f158d6cc0e19100]
-module.example_vpcs.aws_vpc.main: Refreshing state... [id=vpc-0866690d6d7a2d7da]
-module.example_vpcs.data.aws_region.current_aws_region: Read complete after 0s [id=us-east-1]
-module.example_vpcs.aws_internet_gateway.gw: Refreshing state... [id=igw-0bf773c3c16c006ca]
-module.example_vpcs.aws_subnet.public[0]: Refreshing state... [id=subnet-02776892c7bb70955]
-module.example_vpcs.aws_subnet.private[1]: Refreshing state... [id=subnet-042bc39f8c88fa25d]
-module.example_vpcs.aws_subnet.private[0]: Refreshing state... [id=subnet-0d35927726b1e4711]
-module.example_vpcs.aws_subnet.public[1]: Refreshing state... [id=subnet-073cdcb2459d59ad8]
-module.example_vpcs.aws_route_table.public: Refreshing state... [id=rtb-0787bc15d5135a2fd]
-module.example_vpcs.aws_route_table_association.public[0]: Refreshing state... [id=rtbassoc-0c14b5107352f1af2]
-module.example_vpcs.aws_route_table_association.public[1]: Refreshing state... [id=rtbassoc-09c76e0008a6ecf15]
-module.example_vpcs.aws_nat_gateway.nat: Refreshing state... [id=nat-00d2eb25e6aedc519]
-module.example_vpcs.aws_route_table.private: Refreshing state... [id=rtb-0705cda7fc002ac6e]
-module.example_vpcs.aws_route_table_association.private[0]: Refreshing state... [id=rtbassoc-0da5d2e2b0664d127]
-module.example_vpcs.aws_route_table_association.private[1]: Refreshing state... [id=rtbassoc-0d22da809a1987176]
-module.example_vpcs.aws_vpc_endpoint.s3: Refreshing state... [id=vpce-06b18f2f262e0b199]
+module.network.module.nat_gateway.aws_eip.nat: Refreshing state... [id=eipalloc-09e04c4ff3c4bbb56]
+module.network.module.vpc.aws_vpc.main: Refreshing state... [id=vpc-092aec105bb519182]
+module.network.module.internet_gateway.aws_internet_gateway.gw: Refreshing state... [id=igw-0a07f6f95761d13fe]
+module.network.module.subnets.aws_subnet.public[1]: Refreshing state... [id=subnet-08a7b6aae08953dbb]
+module.network.module.subnets.aws_subnet.public[0]: Refreshing state... [id=subnet-0677d2c42fea6169c]
+module.network.module.subnets.aws_subnet.private[1]: Refreshing state... [id=subnet-07fc2275871ad6047]
+module.network.module.subnets.aws_subnet.private[0]: Refreshing state... [id=subnet-09a64346859d45141]
+module.network.module.route_tables.aws_route_table.public: Refreshing state... [id=rtb-0f23812667f3bd5e2]
+module.network.module.route_tables.aws_route_table_association.public[0]: Refreshing state... [id=rtbassoc-025f3b8ea86ce4d30]
+module.network.module.route_tables.aws_route_table_association.public[1]: Refreshing state... [id=rtbassoc-0b114245494a90d86]
+module.network.module.nat_gateway.aws_nat_gateway.nat: Refreshing state... [id=nat-09a7cf438f6f50800]
+module.network.module.route_tables.aws_route_table.private: Refreshing state... [id=rtb-0b3f53e55e0f2b5d5]
+module.network.module.route_tables.aws_route_table_association.private[1]: Refreshing state... [id=rtbassoc-01658a4f38bf09ea6]
+module.network.module.route_tables.aws_route_table_association.private[0]: Refreshing state... [id=rtbassoc-00e57e8bb052132aa]
+module.network.module.vpc_endpoint.aws_vpc_endpoint.s3: Refreshing state... [id=vpce-092b6588ee6266856]
 
 Terraform used the selected providers to generate the following execution plan. Resource actions are indicated with the following symbols:
   - destroy
 
 Terraform will perform the following actions:
 
-  # module.example_vpcs.aws_eip.nat will be destroyed
-  - resource "aws_eip" "nat" {
-      - allocation_id            = "eipalloc-07f158d6cc0e19100" -> null
-      - association_id           = "eipassoc-00708e84ba60b61b5" -> null
-      - domain                   = "vpc" -> null
-      - id                       = "eipalloc-07f158d6cc0e19100" -> null
-      - network_border_group     = "us-east-1" -> null
-      - network_interface        = "eni-03d1ea8c1cb51e5c0" -> null
-      - private_dns              = "ip-10-0-0-105.ec2.internal" -> null
-      - private_ip               = "10.0.0.105" -> null
-      - public_dns               = "ec2-3-234-32-190.compute-1.amazonaws.com" -> null
-      - public_ip                = "3.234.32.190" -> null
-      - public_ipv4_pool         = "amazon" -> null
-      - tags                     = {} -> null
-      - tags_all                 = {} -> null
-      - vpc                      = true -> null
-        # (4 unchanged attributes hidden)
-    }
-
-  # module.example_vpcs.aws_internet_gateway.gw will be destroyed
+  # module.network.module.internet_gateway.aws_internet_gateway.gw will be destroyed
   - resource "aws_internet_gateway" "gw" {
-      - arn      = "arn:aws:ec2:us-east-1:767397961434:internet-gateway/igw-0bf773c3c16c006ca" -> null
-      - id       = "igw-0bf773c3c16c006ca" -> null
+      - arn      = "arn:aws:ec2:us-east-1:767397961434:internet-gateway/igw-0a07f6f95761d13fe" -> null
+      - id       = "igw-0a07f6f95761d13fe" -> null
       - owner_id = "767397961434" -> null
       - tags     = {
           - "Name" = "example-igw"
@@ -715,114 +673,125 @@ Terraform will perform the following actions:
       - tags_all = {
           - "Name" = "example-igw"
         } -> null
-      - vpc_id   = "vpc-0866690d6d7a2d7da" -> null
+      - vpc_id   = "vpc-092aec105bb519182" -> null
     }
 
-  # module.example_vpcs.aws_nat_gateway.nat will be destroyed
+  # module.network.module.nat_gateway.aws_eip.nat will be destroyed
+  - resource "aws_eip" "nat" {
+      - allocation_id            = "eipalloc-09e04c4ff3c4bbb56" -> null
+      - association_id           = "eipassoc-0ccc8fe125fd69e83" -> null
+      - domain                   = "vpc" -> null
+      - id                       = "eipalloc-09e04c4ff3c4bbb56" -> null
+      - network_border_group     = "us-east-1" -> null
+      - network_interface        = "eni-0ba2df1061fc45a6f" -> null
+      - private_dns              = "ip-10-10-10-210.ec2.internal" -> null
+      - private_ip               = "10.10.10.210" -> null
+      - public_dns               = "ec2-44-223-252-156.compute-1.amazonaws.com" -> null
+      - public_ip                = "44.223.252.156" -> null
+      - public_ipv4_pool         = "amazon" -> null
+      - tags                     = {} -> null
+      - tags_all                 = {} -> null
+      - vpc                      = true -> null
+        # (4 unchanged attributes hidden)
+    }
+
+  # module.network.module.nat_gateway.aws_nat_gateway.nat will be destroyed
   - resource "aws_nat_gateway" "nat" {
-      - allocation_id                      = "eipalloc-07f158d6cc0e19100" -> null
-      - association_id                     = "eipassoc-00708e84ba60b61b5" -> null
+      - allocation_id                      = "eipalloc-09e04c4ff3c4bbb56" -> null
+      - association_id                     = "eipassoc-0ccc8fe125fd69e83" -> null
       - connectivity_type                  = "public" -> null
-      - id                                 = "nat-00d2eb25e6aedc519" -> null
-      - network_interface_id               = "eni-03d1ea8c1cb51e5c0" -> null
-      - private_ip                         = "10.0.0.105" -> null
-      - public_ip                          = "3.234.32.190" -> null
+      - id                                 = "nat-09a7cf438f6f50800" -> null
+      - network_interface_id               = "eni-0ba2df1061fc45a6f" -> null
+      - private_ip                         = "10.10.10.210" -> null
+      - public_ip                          = "44.223.252.156" -> null
       - secondary_allocation_ids           = [] -> null
       - secondary_private_ip_address_count = 0 -> null
       - secondary_private_ip_addresses     = [] -> null
-      - subnet_id                          = "subnet-02776892c7bb70955" -> null
+      - subnet_id                          = "subnet-0677d2c42fea6169c" -> null
       - tags                               = {} -> null
       - tags_all                           = {} -> null
     }
 
-  # module.example_vpcs.aws_route_table.private will be destroyed
+  # module.network.module.route_tables.aws_route_table.private will be destroyed
   - resource "aws_route_table" "private" {
-      - arn              = "arn:aws:ec2:us-east-1:767397961434:route-table/rtb-0705cda7fc002ac6e" -> null
-      - id               = "rtb-0705cda7fc002ac6e" -> null
+      - arn              = "arn:aws:ec2:us-east-1:767397961434:route-table/rtb-0b3f53e55e0f2b5d5" -> null
+      - id               = "rtb-0b3f53e55e0f2b5d5" -> null
       - owner_id         = "767397961434" -> null
       - propagating_vgws = [] -> null
       - route            = [
           - {
               - cidr_block                 = "0.0.0.0/0"
-              - nat_gateway_id             = "nat-00d2eb25e6aedc519"
+              - nat_gateway_id             = "nat-09a7cf438f6f50800"
                 # (11 unchanged attributes hidden)
             },
         ] -> null
-      - tags             = {
-          - "Name" = "example-private-rt"
-        } -> null
-      - tags_all         = {
-          - "Name" = "example-private-rt"
-        } -> null
-      - vpc_id           = "vpc-0866690d6d7a2d7da" -> null
+      - tags             = {} -> null
+      - tags_all         = {} -> null
+      - vpc_id           = "vpc-092aec105bb519182" -> null
     }
 
-  # module.example_vpcs.aws_route_table.public will be destroyed
+  # module.network.module.route_tables.aws_route_table.public will be destroyed
   - resource "aws_route_table" "public" {
-      - arn              = "arn:aws:ec2:us-east-1:767397961434:route-table/rtb-0787bc15d5135a2fd" -> null
-      - id               = "rtb-0787bc15d5135a2fd" -> null
+      - arn              = "arn:aws:ec2:us-east-1:767397961434:route-table/rtb-0f23812667f3bd5e2" -> null
+      - id               = "rtb-0f23812667f3bd5e2" -> null
       - owner_id         = "767397961434" -> null
       - propagating_vgws = [] -> null
       - route            = [
           - {
               - cidr_block                 = "0.0.0.0/0"
-              - gateway_id                 = "igw-0bf773c3c16c006ca"
+              - gateway_id                 = "igw-0a07f6f95761d13fe"
                 # (11 unchanged attributes hidden)
             },
         ] -> null
-      - tags             = {
-          - "Name" = "example-public-rt"
-        } -> null
-      - tags_all         = {
-          - "Name" = "example-public-rt"
-        } -> null
-      - vpc_id           = "vpc-0866690d6d7a2d7da" -> null
+      - tags             = {} -> null
+      - tags_all         = {} -> null
+      - vpc_id           = "vpc-092aec105bb519182" -> null
     }
 
-  # module.example_vpcs.aws_route_table_association.private[0] will be destroyed
+  # module.network.module.route_tables.aws_route_table_association.private[0] will be destroyed
   - resource "aws_route_table_association" "private" {
-      - id             = "rtbassoc-0da5d2e2b0664d127" -> null
-      - route_table_id = "rtb-0705cda7fc002ac6e" -> null
-      - subnet_id      = "subnet-0d35927726b1e4711" -> null
+      - id             = "rtbassoc-00e57e8bb052132aa" -> null
+      - route_table_id = "rtb-0b3f53e55e0f2b5d5" -> null
+      - subnet_id      = "subnet-09a64346859d45141" -> null
         # (1 unchanged attribute hidden)
     }
 
-  # module.example_vpcs.aws_route_table_association.private[1] will be destroyed
+  # module.network.module.route_tables.aws_route_table_association.private[1] will be destroyed
   - resource "aws_route_table_association" "private" {
-      - id             = "rtbassoc-0d22da809a1987176" -> null
-      - route_table_id = "rtb-0705cda7fc002ac6e" -> null
-      - subnet_id      = "subnet-042bc39f8c88fa25d" -> null
+      - id             = "rtbassoc-01658a4f38bf09ea6" -> null
+      - route_table_id = "rtb-0b3f53e55e0f2b5d5" -> null
+      - subnet_id      = "subnet-07fc2275871ad6047" -> null
         # (1 unchanged attribute hidden)
     }
 
-  # module.example_vpcs.aws_route_table_association.public[0] will be destroyed
+  # module.network.module.route_tables.aws_route_table_association.public[0] will be destroyed
   - resource "aws_route_table_association" "public" {
-      - id             = "rtbassoc-0c14b5107352f1af2" -> null
-      - route_table_id = "rtb-0787bc15d5135a2fd" -> null
-      - subnet_id      = "subnet-02776892c7bb70955" -> null
+      - id             = "rtbassoc-025f3b8ea86ce4d30" -> null
+      - route_table_id = "rtb-0f23812667f3bd5e2" -> null
+      - subnet_id      = "subnet-0677d2c42fea6169c" -> null
         # (1 unchanged attribute hidden)
     }
 
-  # module.example_vpcs.aws_route_table_association.public[1] will be destroyed
+  # module.network.module.route_tables.aws_route_table_association.public[1] will be destroyed
   - resource "aws_route_table_association" "public" {
-      - id             = "rtbassoc-09c76e0008a6ecf15" -> null
-      - route_table_id = "rtb-0787bc15d5135a2fd" -> null
-      - subnet_id      = "subnet-073cdcb2459d59ad8" -> null
+      - id             = "rtbassoc-0b114245494a90d86" -> null
+      - route_table_id = "rtb-0f23812667f3bd5e2" -> null
+      - subnet_id      = "subnet-08a7b6aae08953dbb" -> null
         # (1 unchanged attribute hidden)
     }
 
-  # module.example_vpcs.aws_subnet.private[0] will be destroyed
+  # module.network.module.subnets.aws_subnet.private[0] will be destroyed
   - resource "aws_subnet" "private" {
-      - arn                                            = "arn:aws:ec2:us-east-1:767397961434:subnet/subnet-0d35927726b1e4711" -> null
+      - arn                                            = "arn:aws:ec2:us-east-1:767397961434:subnet/subnet-09a64346859d45141" -> null
       - assign_ipv6_address_on_creation                = false -> null
       - availability_zone                              = "us-east-1a" -> null
       - availability_zone_id                           = "use1-az6" -> null
-      - cidr_block                                     = "10.0.2.0/24" -> null
+      - cidr_block                                     = "10.10.12.0/24" -> null
       - enable_dns64                                   = false -> null
       - enable_lni_at_device_index                     = 0 -> null
       - enable_resource_name_dns_a_record_on_launch    = false -> null
       - enable_resource_name_dns_aaaa_record_on_launch = false -> null
-      - id                                             = "subnet-0d35927726b1e4711" -> null
+      - id                                             = "subnet-09a64346859d45141" -> null
       - ipv6_native                                    = false -> null
       - map_customer_owned_ip_on_launch                = false -> null
       - map_public_ip_on_launch                        = false -> null
@@ -834,22 +803,22 @@ Terraform will perform the following actions:
       - tags_all                                       = {
           - "Name" = "example-private-0"
         } -> null
-      - vpc_id                                         = "vpc-0866690d6d7a2d7da" -> null
+      - vpc_id                                         = "vpc-092aec105bb519182" -> null
         # (4 unchanged attributes hidden)
     }
 
-  # module.example_vpcs.aws_subnet.private[1] will be destroyed
+  # module.network.module.subnets.aws_subnet.private[1] will be destroyed
   - resource "aws_subnet" "private" {
-      - arn                                            = "arn:aws:ec2:us-east-1:767397961434:subnet/subnet-042bc39f8c88fa25d" -> null
+      - arn                                            = "arn:aws:ec2:us-east-1:767397961434:subnet/subnet-07fc2275871ad6047" -> null
       - assign_ipv6_address_on_creation                = false -> null
       - availability_zone                              = "us-east-1b" -> null
       - availability_zone_id                           = "use1-az1" -> null
-      - cidr_block                                     = "10.0.3.0/24" -> null
+      - cidr_block                                     = "10.10.13.0/24" -> null
       - enable_dns64                                   = false -> null
       - enable_lni_at_device_index                     = 0 -> null
       - enable_resource_name_dns_a_record_on_launch    = false -> null
       - enable_resource_name_dns_aaaa_record_on_launch = false -> null
-      - id                                             = "subnet-042bc39f8c88fa25d" -> null
+      - id                                             = "subnet-07fc2275871ad6047" -> null
       - ipv6_native                                    = false -> null
       - map_customer_owned_ip_on_launch                = false -> null
       - map_public_ip_on_launch                        = false -> null
@@ -861,22 +830,22 @@ Terraform will perform the following actions:
       - tags_all                                       = {
           - "Name" = "example-private-1"
         } -> null
-      - vpc_id                                         = "vpc-0866690d6d7a2d7da" -> null
+      - vpc_id                                         = "vpc-092aec105bb519182" -> null
         # (4 unchanged attributes hidden)
     }
 
-  # module.example_vpcs.aws_subnet.public[0] will be destroyed
+  # module.network.module.subnets.aws_subnet.public[0] will be destroyed
   - resource "aws_subnet" "public" {
-      - arn                                            = "arn:aws:ec2:us-east-1:767397961434:subnet/subnet-02776892c7bb70955" -> null
+      - arn                                            = "arn:aws:ec2:us-east-1:767397961434:subnet/subnet-0677d2c42fea6169c" -> null
       - assign_ipv6_address_on_creation                = false -> null
       - availability_zone                              = "us-east-1a" -> null
       - availability_zone_id                           = "use1-az6" -> null
-      - cidr_block                                     = "10.0.0.0/24" -> null
+      - cidr_block                                     = "10.10.10.0/24" -> null
       - enable_dns64                                   = false -> null
       - enable_lni_at_device_index                     = 0 -> null
       - enable_resource_name_dns_a_record_on_launch    = false -> null
       - enable_resource_name_dns_aaaa_record_on_launch = false -> null
-      - id                                             = "subnet-02776892c7bb70955" -> null
+      - id                                             = "subnet-0677d2c42fea6169c" -> null
       - ipv6_native                                    = false -> null
       - map_customer_owned_ip_on_launch                = false -> null
       - map_public_ip_on_launch                        = true -> null
@@ -888,22 +857,22 @@ Terraform will perform the following actions:
       - tags_all                                       = {
           - "Name" = "example-public-0"
         } -> null
-      - vpc_id                                         = "vpc-0866690d6d7a2d7da" -> null
+      - vpc_id                                         = "vpc-092aec105bb519182" -> null
         # (4 unchanged attributes hidden)
     }
 
-  # module.example_vpcs.aws_subnet.public[1] will be destroyed
+  # module.network.module.subnets.aws_subnet.public[1] will be destroyed
   - resource "aws_subnet" "public" {
-      - arn                                            = "arn:aws:ec2:us-east-1:767397961434:subnet/subnet-073cdcb2459d59ad8" -> null
+      - arn                                            = "arn:aws:ec2:us-east-1:767397961434:subnet/subnet-08a7b6aae08953dbb" -> null
       - assign_ipv6_address_on_creation                = false -> null
       - availability_zone                              = "us-east-1b" -> null
       - availability_zone_id                           = "use1-az1" -> null
-      - cidr_block                                     = "10.0.1.0/24" -> null
+      - cidr_block                                     = "10.10.11.0/24" -> null
       - enable_dns64                                   = false -> null
       - enable_lni_at_device_index                     = 0 -> null
       - enable_resource_name_dns_a_record_on_launch    = false -> null
       - enable_resource_name_dns_aaaa_record_on_launch = false -> null
-      - id                                             = "subnet-073cdcb2459d59ad8" -> null
+      - id                                             = "subnet-08a7b6aae08953dbb" -> null
       - ipv6_native                                    = false -> null
       - map_customer_owned_ip_on_launch                = false -> null
       - map_public_ip_on_launch                        = true -> null
@@ -915,26 +884,26 @@ Terraform will perform the following actions:
       - tags_all                                       = {
           - "Name" = "example-public-1"
         } -> null
-      - vpc_id                                         = "vpc-0866690d6d7a2d7da" -> null
+      - vpc_id                                         = "vpc-092aec105bb519182" -> null
         # (4 unchanged attributes hidden)
     }
 
-  # module.example_vpcs.aws_vpc.main will be destroyed
+  # module.network.module.vpc.aws_vpc.main will be destroyed
   - resource "aws_vpc" "main" {
-      - arn                                  = "arn:aws:ec2:us-east-1:767397961434:vpc/vpc-0866690d6d7a2d7da" -> null
+      - arn                                  = "arn:aws:ec2:us-east-1:767397961434:vpc/vpc-092aec105bb519182" -> null
       - assign_generated_ipv6_cidr_block     = false -> null
-      - cidr_block                           = "10.0.0.0/16" -> null
-      - default_network_acl_id               = "acl-02444de6b539fa1f0" -> null
-      - default_route_table_id               = "rtb-082dcbc0a8a843c2e" -> null
-      - default_security_group_id            = "sg-05a2fa3e89a37f64d" -> null
+      - cidr_block                           = "10.10.0.0/16" -> null
+      - default_network_acl_id               = "acl-0d4032416f137342a" -> null
+      - default_route_table_id               = "rtb-08605f54b4749ff78" -> null
+      - default_security_group_id            = "sg-0ed8be3d93cb29509" -> null
       - dhcp_options_id                      = "dopt-097221ed8fdf1b4f4" -> null
       - enable_dns_hostnames                 = true -> null
       - enable_dns_support                   = true -> null
       - enable_network_address_usage_metrics = false -> null
-      - id                                   = "vpc-0866690d6d7a2d7da" -> null
+      - id                                   = "vpc-092aec105bb519182" -> null
       - instance_tenancy                     = "default" -> null
       - ipv6_netmask_length                  = 0 -> null
-      - main_route_table_id                  = "rtb-082dcbc0a8a843c2e" -> null
+      - main_route_table_id                  = "rtb-08605f54b4749ff78" -> null
       - owner_id                             = "767397961434" -> null
       - tags                                 = {
           - "Name" = "example-vpc"
@@ -945,9 +914,9 @@ Terraform will perform the following actions:
         # (4 unchanged attributes hidden)
     }
 
-  # module.example_vpcs.aws_vpc_endpoint.s3 will be destroyed
+  # module.network.module.vpc_endpoint.aws_vpc_endpoint.s3 will be destroyed
   - resource "aws_vpc_endpoint" "s3" {
-      - arn                   = "arn:aws:ec2:us-east-1:767397961434:vpc-endpoint/vpce-06b18f2f262e0b199" -> null
+      - arn                   = "arn:aws:ec2:us-east-1:767397961434:vpc-endpoint/vpce-092b6588ee6266856" -> null
       - cidr_blocks           = [
           - "16.182.0.0/16",
           - "18.34.0.0/19",
@@ -957,17 +926,17 @@ Terraform will perform the following actions:
           - "18.34.232.0/21",
         ] -> null
       - dns_entry             = [] -> null
-      - id                    = "vpce-06b18f2f262e0b199" -> null
+      - id                    = "vpce-092b6588ee6266856" -> null
       - network_interface_ids = [] -> null
       - owner_id              = "767397961434" -> null
       - policy                = jsonencode(
             {
               - Statement = [
                   - {
-                      - Action    = "s3:*"
+                      - Action    = "*"
                       - Effect    = "Allow"
                       - Principal = "*"
-                      - Resource  = "arn:aws:s3:::*"
+                      - Resource  = "*"
                     },
                 ]
               - Version   = "2008-10-17"
@@ -977,7 +946,7 @@ Terraform will perform the following actions:
       - private_dns_enabled   = false -> null
       - requester_managed     = false -> null
       - route_table_ids       = [
-          - "rtb-0705cda7fc002ac6e",
+          - "rtb-0b3f53e55e0f2b5d5",
         ] -> null
       - security_group_ids    = [] -> null
       - service_name          = "com.amazonaws.us-east-1.s3" -> null
@@ -986,11 +955,20 @@ Terraform will perform the following actions:
       - tags                  = {} -> null
       - tags_all              = {} -> null
       - vpc_endpoint_type     = "Gateway" -> null
-      - vpc_id                = "vpc-0866690d6d7a2d7da" -> null
+      - vpc_id                = "vpc-092aec105bb519182" -> null
         # (1 unchanged attribute hidden)
     }
 
 Plan: 0 to add, 0 to change, 15 to destroy.
+╷
+│ Warning: Argument is deprecated
+│
+│   with module.network.module.nat_gateway.aws_eip.nat,
+│   on modules/nat_gateway/main.tf line 2, in resource "aws_eip" "nat":
+│    2:   vpc = true
+│
+│ use domain attribute instead
+╵
 
 Do you really want to destroy all resources?
   Terraform will destroy all your managed infrastructure, as shown above.
@@ -998,44 +976,49 @@ Do you really want to destroy all resources?
 
   Enter a value: yes
 
-module.example_vpcs.aws_route_table_association.public[0]: Destroying... [id=rtbassoc-0c14b5107352f1af2]
-module.example_vpcs.aws_route_table_association.public[1]: Destroying... [id=rtbassoc-09c76e0008a6ecf15]
-module.example_vpcs.aws_route_table_association.private[0]: Destroying... [id=rtbassoc-0da5d2e2b0664d127]
-module.example_vpcs.aws_route_table_association.private[1]: Destroying... [id=rtbassoc-0d22da809a1987176]
-module.example_vpcs.aws_vpc_endpoint.s3: Destroying... [id=vpce-06b18f2f262e0b199]
-module.example_vpcs.aws_route_table_association.private[1]: Destruction complete after 0s
-module.example_vpcs.aws_route_table_association.public[1]: Destruction complete after 0s
-module.example_vpcs.aws_route_table_association.private[0]: Destruction complete after 0s
-module.example_vpcs.aws_route_table_association.public[0]: Destruction complete after 0s
-module.example_vpcs.aws_subnet.private[1]: Destroying... [id=subnet-042bc39f8c88fa25d]
-module.example_vpcs.aws_route_table.public: Destroying... [id=rtb-0787bc15d5135a2fd]
-module.example_vpcs.aws_subnet.private[0]: Destroying... [id=subnet-0d35927726b1e4711]
-module.example_vpcs.aws_subnet.private[1]: Destruction complete after 0s
-module.example_vpcs.aws_subnet.private[0]: Destruction complete after 0s
-module.example_vpcs.aws_route_table.public: Destruction complete after 0s
-module.example_vpcs.aws_internet_gateway.gw: Destroying... [id=igw-0bf773c3c16c006ca]
-module.example_vpcs.aws_vpc_endpoint.s3: Destruction complete after 6s
-module.example_vpcs.aws_route_table.private: Destroying... [id=rtb-0705cda7fc002ac6e]
-module.example_vpcs.aws_route_table.private: Destruction complete after 1s
-module.example_vpcs.aws_nat_gateway.nat: Destroying... [id=nat-00d2eb25e6aedc519]
-module.example_vpcs.aws_internet_gateway.gw: Still destroying... [id=igw-0bf773c3c16c006ca, 10s elapsed]
-module.example_vpcs.aws_nat_gateway.nat: Still destroying... [id=nat-00d2eb25e6aedc519, 10s elapsed]
-module.example_vpcs.aws_internet_gateway.gw: Still destroying... [id=igw-0bf773c3c16c006ca, 20s elapsed]
-module.example_vpcs.aws_nat_gateway.nat: Still destroying... [id=nat-00d2eb25e6aedc519, 20s elapsed]
-module.example_vpcs.aws_internet_gateway.gw: Still destroying... [id=igw-0bf773c3c16c006ca, 30s elapsed]
-module.example_vpcs.aws_nat_gateway.nat: Still destroying... [id=nat-00d2eb25e6aedc519, 30s elapsed]
-module.example_vpcs.aws_internet_gateway.gw: Still destroying... [id=igw-0bf773c3c16c006ca, 40s elapsed]
-module.example_vpcs.aws_nat_gateway.nat: Still destroying... [id=nat-00d2eb25e6aedc519, 40s elapsed]
-module.example_vpcs.aws_nat_gateway.nat: Destruction complete after 42s
-module.example_vpcs.aws_eip.nat: Destroying... [id=eipalloc-07f158d6cc0e19100]
-module.example_vpcs.aws_subnet.public[1]: Destroying... [id=subnet-073cdcb2459d59ad8]
-module.example_vpcs.aws_subnet.public[0]: Destroying... [id=subnet-02776892c7bb70955]
-module.example_vpcs.aws_subnet.public[1]: Destruction complete after 1s
-module.example_vpcs.aws_subnet.public[0]: Destruction complete after 1s
-module.example_vpcs.aws_internet_gateway.gw: Destruction complete after 50s
-module.example_vpcs.aws_vpc.main: Destroying... [id=vpc-0866690d6d7a2d7da]
-module.example_vpcs.aws_eip.nat: Destruction complete after 1s
-module.example_vpcs.aws_vpc.main: Destruction complete after 1s
+module.network.module.route_tables.aws_route_table_association.private[1]: Destroying... [id=rtbassoc-01658a4f38bf09ea6]
+module.network.module.route_tables.aws_route_table_association.public[1]: Destroying... [id=rtbassoc-0b114245494a90d86]
+module.network.module.route_tables.aws_route_table_association.private[0]: Destroying... [id=rtbassoc-00e57e8bb052132aa]
+module.network.module.route_tables.aws_route_table_association.public[0]: Destroying... [id=rtbassoc-025f3b8ea86ce4d30]
+module.network.module.vpc_endpoint.aws_vpc_endpoint.s3: Destroying... [id=vpce-092b6588ee6266856]
+module.network.module.route_tables.aws_route_table_association.public[1]: Destruction complete after 0s
+module.network.module.route_tables.aws_route_table_association.private[0]: Destruction complete after 0s
+module.network.module.route_tables.aws_route_table_association.public[0]: Destruction complete after 0s
+module.network.module.route_tables.aws_route_table_association.private[1]: Destruction complete after 0s
+module.network.module.route_tables.aws_route_table.public: Destroying... [id=rtb-0f23812667f3bd5e2]
+module.network.module.subnets.aws_subnet.private[1]: Destroying... [id=subnet-07fc2275871ad6047]
+module.network.module.subnets.aws_subnet.private[0]: Destroying... [id=subnet-09a64346859d45141]
+module.network.module.subnets.aws_subnet.private[0]: Destruction complete after 0s
+module.network.module.subnets.aws_subnet.private[1]: Destruction complete after 0s
+module.network.module.route_tables.aws_route_table.public: Destruction complete after 0s
+module.network.module.internet_gateway.aws_internet_gateway.gw: Destroying... [id=igw-0a07f6f95761d13fe]
+module.network.module.vpc_endpoint.aws_vpc_endpoint.s3: Destruction complete after 6s
+module.network.module.route_tables.aws_route_table.private: Destroying... [id=rtb-0b3f53e55e0f2b5d5]
+module.network.module.route_tables.aws_route_table.private: Destruction complete after 1s
+module.network.module.nat_gateway.aws_nat_gateway.nat: Destroying... [id=nat-09a7cf438f6f50800]
+module.network.module.internet_gateway.aws_internet_gateway.gw: Still destroying... [id=igw-0a07f6f95761d13fe, 10s elapsed]
+module.network.module.nat_gateway.aws_nat_gateway.nat: Still destroying... [id=nat-09a7cf438f6f50800, 10s elapsed]
+module.network.module.internet_gateway.aws_internet_gateway.gw: Still destroying... [id=igw-0a07f6f95761d13fe, 20s elapsed]
+module.network.module.nat_gateway.aws_nat_gateway.nat: Still destroying... [id=nat-09a7cf438f6f50800, 20s elapsed]
+module.network.module.internet_gateway.aws_internet_gateway.gw: Still destroying... [id=igw-0a07f6f95761d13fe, 30s elapsed]
+module.network.module.nat_gateway.aws_nat_gateway.nat: Still destroying... [id=nat-09a7cf438f6f50800, 30s elapsed]
+module.network.module.internet_gateway.aws_internet_gateway.gw: Still destroying... [id=igw-0a07f6f95761d13fe, 40s elapsed]
+module.network.module.nat_gateway.aws_nat_gateway.nat: Still destroying... [id=nat-09a7cf438f6f50800, 40s elapsed]
+module.network.module.internet_gateway.aws_internet_gateway.gw: Still destroying... [id=igw-0a07f6f95761d13fe, 50s elapsed]
+module.network.module.nat_gateway.aws_nat_gateway.nat: Still destroying... [id=nat-09a7cf438f6f50800, 50s elapsed]
+module.network.module.internet_gateway.aws_internet_gateway.gw: Still destroying... [id=igw-0a07f6f95761d13fe, 1m0s elapsed]
+module.network.module.nat_gateway.aws_nat_gateway.nat: Still destroying... [id=nat-09a7cf438f6f50800, 1m0s elapsed]
+module.network.module.nat_gateway.aws_nat_gateway.nat: Destruction complete after 1m3s
+module.network.module.subnets.aws_subnet.public[0]: Destroying... [id=subnet-0677d2c42fea6169c]
+module.network.module.nat_gateway.aws_eip.nat: Destroying... [id=eipalloc-09e04c4ff3c4bbb56]
+module.network.module.subnets.aws_subnet.public[1]: Destroying... [id=subnet-08a7b6aae08953dbb]
+module.network.module.subnets.aws_subnet.public[1]: Destruction complete after 1s
+module.network.module.subnets.aws_subnet.public[0]: Destruction complete after 1s
+module.network.module.internet_gateway.aws_internet_gateway.gw: Still destroying... [id=igw-0a07f6f95761d13fe, 1m10s elapsed]
+module.network.module.nat_gateway.aws_eip.nat: Destruction complete after 2s
+module.network.module.internet_gateway.aws_internet_gateway.gw: Destruction complete after 1m11s
+module.network.module.vpc.aws_vpc.main: Destroying... [id=vpc-092aec105bb519182]
+module.network.module.vpc.aws_vpc.main: Destruction complete after 1s
 
 Destroy complete! Resources: 15 destroyed.
 p@l440:~/terraform-aws/excercise-1$
