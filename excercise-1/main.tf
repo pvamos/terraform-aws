@@ -1,11 +1,13 @@
+# Fetch current AWS region
+data "aws_region" "current_aws_region" {}
 
 # Create VPC
 resource "aws_vpc" "main" {
-  cidr_block           = "10.0.0.0/16"
+  cidr_block           = var.cidr_block
   enable_dns_support   = true
   enable_dns_hostnames = true
   tags = {
-    Name = "example-vpc"
+    Name = "${var.project_name}-vpc"
   }
 }
 
@@ -13,7 +15,7 @@ resource "aws_vpc" "main" {
 resource "aws_internet_gateway" "gw" {
   vpc_id = aws_vpc.main.id
   tags = {
-    Name = "example-igw"
+    Name = "${var.project_name}-igw"
   }
 }
 
@@ -21,11 +23,11 @@ resource "aws_internet_gateway" "gw" {
 resource "aws_subnet" "public" {
   count = 2  # Two public subnets
   vpc_id            = aws_vpc.main.id
-  cidr_block        = cidrsubnet("10.0.0.0/16", 8, count.index)
-  availability_zone = "us-east-1${["a", "b"][count.index]}"
+  cidr_block        = cidrsubnet(var.cidr_block, 8, count.index)
+  availability_zone = element(var.azs, count.index)
   map_public_ip_on_launch = true
   tags = {
-    Name = "example-public-${count.index}"
+    Name = "${var.project_name}-public-${count.index}"
   }
 }
 
@@ -33,10 +35,10 @@ resource "aws_subnet" "public" {
 resource "aws_subnet" "private" {
   count = 2  # Two private subnets
   vpc_id            = aws_vpc.main.id
-  cidr_block        = cidrsubnet("10.0.0.0/16", 8, count.index + 2)
-  availability_zone = "us-east-1${["a", "b"][count.index]}"
+  cidr_block        = cidrsubnet(var.cidr_block, 8, count.index + 2)
+  availability_zone = element(var.azs, count.index)
   tags = {
-    Name = "example-private-${count.index}"
+    Name = "${var.project_name}-private-${count.index}"
   }
 }
 
@@ -48,7 +50,7 @@ resource "aws_route_table" "public" {
     gateway_id = aws_internet_gateway.gw.id
   }
   tags = {
-    Name = "example-public-rt"
+    Name = "${var.project_name}-public-rt"
   }
 }
 
@@ -77,7 +79,7 @@ resource "aws_route_table" "private" {
     nat_gateway_id = aws_nat_gateway.nat.id
   }
   tags = {
-    Name = "example-private-rt"
+    Name = "${var.project_name}-private-rt"
   }
 }
 
@@ -91,7 +93,7 @@ resource "aws_route_table_association" "private" {
 # S3 VPC Endpoint for Private Access
 resource "aws_vpc_endpoint" "s3" {
   vpc_id = aws_vpc.main.id
-  service_name = "com.amazonaws.us-east-1.s3"
+  service_name = "com.amazonaws.${data.aws_region.current_aws_region.name}.s3"
   vpc_endpoint_type = "Gateway"
   route_table_ids = [aws_route_table.private.id]
   policy = <<POLICY
