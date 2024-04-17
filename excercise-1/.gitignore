@@ -1,0 +1,34 @@
+# Local .terraform directories
+**/.terraform/*
+
+# .tfstate files
+*.tfstate
+*.tfstate.*
+terraform.tfstate*
+
+# .terraform.lock.hcl file
+.terraform.lock.hcl
+
+# Crash log files
+crash.log
+
+# Exclude all .tfvars files, which might contain secret data, such as
+# password, private keys, and other sensitive information
+*.tfvars
+*.tfvars.json
+
+# Ignore override files as they are usually used to override resources locally
+override.tf
+override.tf.json
+*_override.tf
+*_override.tf.json
+
+# Ignore CLI configuration files
+.terraformrc
+terraform.rc
+
+# Ignore terraform.tfvars containing AWS secret key value
+terraform.tfvars
+
+# env.sh to remove AWS secret, see env.sh.example
+env.sh
