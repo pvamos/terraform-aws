@@ -29,6 +29,3 @@ terraform.rc
 
 # Ignore terraform.tfvars containing AWS secret key value
 terraform.tfvars
-
-# env.sh to remove AWS secret, see env.sh.example
-env.sh
