@@ -1,9 +1,3 @@
-provider "aws" {
-  region = "us-east-1"
-  # AWS 'access_key' and 'secret_key' credentials are provided through environment variables:
-  # export AWS_ACCESS_KEY_ID="your_access_key_id"
-  # export AWS_SECRET_ACCESS_KEY="your_secret_key_value"
-}
 
 # Create VPC
 resource "aws_vpc" "main" {

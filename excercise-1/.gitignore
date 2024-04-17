@@ -28,7 +28,7 @@ override.tf.json
 terraform.rc
 
 # Ignore terraform.tfvars containing AWS secret key value
+# see terraform.tfvars.example
 terraform.tfvars
 
-# env.sh to remove AWS secret, see env.sh.example
-env.sh
+
