@@ -22,6 +22,7 @@ resource "aws_internet_gateway" "gw" {
 # Subnet Creation - Public
 resource "aws_subnet" "public" {
   count = 2  # Two public subnets
+  
   vpc_id            = aws_vpc.main.id
   cidr_block        = cidrsubnet(var.cidr_block, 8, count.index)
   availability_zone = element(var.azs, count.index)
@@ -34,6 +35,7 @@ resource "aws_subnet" "public" {
 # Subnet Creation - Private
 resource "aws_subnet" "private" {
   count = 2  # Two private subnets
+
   vpc_id            = aws_vpc.main.id
   cidr_block        = cidrsubnet(var.cidr_block, 8, count.index + 2)
   availability_zone = element(var.azs, count.index)
@@ -56,13 +58,14 @@ resource "aws_route_table" "public" {
 
 resource "aws_route_table_association" "public" {
   count = 2
+
   subnet_id      = aws_subnet.public[count.index].id
   route_table_id = aws_route_table.public.id
 }
 
 # Elastic IP for NAT Gateway
 resource "aws_eip" "nat" {
-  vpc = true
+  domain = "vpc"  # Updated attribute to use 'domain' instead of deprecated 'vpc'
 }
 
 # NAT Gateway for Private Subnets
@@ -86,6 +89,7 @@ resource "aws_route_table" "private" {
 # Route Table Association for Private Subnets
 resource "aws_route_table_association" "private" {
   count = 2
+
   subnet_id      = aws_subnet.private[count.index].id
   route_table_id = aws_route_table.private.id
 }
@@ -107,4 +111,3 @@ resource "aws_vpc_endpoint" "s3" {
 }
 POLICY
 }
-
