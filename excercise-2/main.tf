@@ -1,8 +1,3 @@
-provider "aws" {
-  region = "us-east-1"
-  access_key = var.main_aws_access_key
-  secret_key = var.main_aws_secret_key
-}
 
 resource "aws_s3_bucket" "backup" {
   bucket = "company-backup-bucket"

@@ -1,4 +1,9 @@
 
+variable "main_aws_region" {
+  type = string
+  description = "AWS region parameter"
+}
+
 variable "main_aws_access_key" {
   type = string
   description = "AWS provider access_key parameter"
