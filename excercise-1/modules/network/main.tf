@@ -40,7 +40,6 @@ module "route_tables" {
 module "vpc_endpoint" {
   source          = "../vpc_endpoint"
   vpc_id          = module.vpc.vpc_id
-  region          = var.region
+  vpc_region      = var.aws_region
   route_table_ids = [module.route_tables.private_route_table_id]
 }
-

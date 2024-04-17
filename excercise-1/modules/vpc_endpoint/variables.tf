@@ -3,7 +3,7 @@ variable "vpc_id" {
   description = "The ID of the VPC where the endpoint will be created"
 }
 
-variable "region" {
+variable "vpc_region" {
   type        = string
   description = "The AWS region where the VPC is located"
 }
