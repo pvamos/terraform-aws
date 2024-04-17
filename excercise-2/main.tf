@@ -6,6 +6,10 @@ provider "aws" {
 
 resource "aws_s3_bucket" "backup" {
   bucket = "company-backup-bucket"
+}
+
+resource "aws_s3_bucket_acl" "backup" {
+  bucket = aws_s3_bucket.backup.id
   acl    = "private"
 }
 
@@ -30,6 +34,16 @@ resource "aws_s3_bucket_lifecycle_configuration" "backup" {
 
     noncurrent_version_expiration {
       noncurrent_days = 180
+    }
+  }
+}
+
+resource "aws_s3_bucket_server_side_encryption_configuration" "backup" {
+  bucket = aws_s3_bucket.backup.id
+
+  rule {
+    apply_server_side_encryption_by_default {
+      sse_algorithm = "AES256"
     }
   }
 }
@@ -60,4 +74,3 @@ output "s3_bucket_arn" {
   value       = aws_s3_bucket.backup.arn
   description = "The ARN of the created S3 bucket for backups."
 }
-
