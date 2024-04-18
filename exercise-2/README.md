@@ -91,7 +91,7 @@ rerun this command to reinitialize your working directory. If you forget, other
 commands will detect it and remind you to do so if necessary.
 ```
 
-### Terraform planS
+### Terraform plan
 ```
 p@l440:~/terraform-aws/exercise-2$ terraform plan
 module.s3_backup.data.aws_iam_policy_document.backup_policy: Reading...
