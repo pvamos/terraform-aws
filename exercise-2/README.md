@@ -52,3 +52,136 @@ module "s3_backup" {
 }
 ```
 
+## Example Output
+
+```
+p@l440:~/terraform-aws/exercise-2$ terraform init
+
+Initializing the backend...
+Initializing modules...
+
+Initializing provider plugins...
+- Reusing previous version of hashicorp/aws from the dependency lock file
+- Using previously-installed hashicorp/aws v5.45.0
+
+Terraform has been successfully initialized!
+
+You may now begin working with Terraform. Try running "terraform plan" to see
+any changes that are required for your infrastructure. All Terraform commands
+should now work.
+
+If you ever set or change modules or backend configuration for Terraform,
+rerun this command to reinitialize your working directory. If you forget, other
+commands will detect it and remind you to do so if necessary.
+p@l440:~/terraform-aws/exercise-2$ terraform plan
+module.s3_backup.data.aws_iam_policy_document.backup_policy: Reading...
+module.s3_backup.data.aws_iam_policy_document.backup_policy: Read complete after 0s [id=3352074433]
+
+Terraform used the selected providers to generate the following execution plan. Resource actions are indicated with the following symbols:
+  + create
+
+Terraform will perform the following actions:
+
+  # module.s3_backup.aws_s3_bucket.backup will be created
+  + resource "aws_s3_bucket" "backup" {
+      + acceleration_status         = (known after apply)
+      + acl                         = (known after apply)
+      + arn                         = (known after apply)
+      + bucket                      = "company-backup-bucket"
+      + bucket_domain_name          = (known after apply)
+      + bucket_prefix               = (known after apply)
+      + bucket_regional_domain_name = (known after apply)
+      + force_destroy               = false
+      + hosted_zone_id              = (known after apply)
+      + id                          = (known after apply)
+      + object_lock_enabled         = (known after apply)
+      + policy                      = (known after apply)
+      + region                      = (known after apply)
+      + request_payer               = (known after apply)
+      + tags_all                    = (known after apply)
+      + website_domain              = (known after apply)
+      + website_endpoint            = (known after apply)
+    }
+
+  # module.s3_backup.aws_s3_bucket_acl.backup will be created
+  + resource "aws_s3_bucket_acl" "backup" {
+      + acl    = "private"
+      + bucket = (known after apply)
+      + id     = (known after apply)
+    }
+
+  # module.s3_backup.aws_s3_bucket_lifecycle_configuration.backup will be created
+  + resource "aws_s3_bucket_lifecycle_configuration" "backup" {
+      + bucket = (known after apply)
+      + id     = (known after apply)
+
+      + rule {
+          + id     = "expire_backups"
+          + status = "Enabled"
+
+          + expiration {
+              + days                         = 180
+              + expired_object_delete_marker = (known after apply)
+            }
+
+          + noncurrent_version_expiration {
+              + noncurrent_days = 180
+            }
+        }
+    }
+
+  # module.s3_backup.aws_s3_bucket_policy.backup will be created
+  + resource "aws_s3_bucket_policy" "backup" {
+      + bucket = (known after apply)
+      + id     = (known after apply)
+      + policy = jsonencode(
+            {
+              + Statement = [
+                  + {
+                      + Action    = [
+                          + "s3:PutObjectAcl",
+                          + "s3:PutObject",
+                        ]
+                      + Effect    = "Allow"
+                      + Principal = {
+                          + AWS = "arn:aws:iam::123456789012:role/backup_uploader"
+                        }
+                      + Resource  = "arn:aws:s3:::company-backup-bucket/*"
+                    },
+                ]
+              + Version   = "2012-10-17"
+            }
+        )
+    }
+
+  # module.s3_backup.aws_s3_bucket_server_side_encryption_configuration.backup will be created
+  + resource "aws_s3_bucket_server_side_encryption_configuration" "backup" {
+      + bucket = (known after apply)
+      + id     = (known after apply)
+
+      + rule {
+          + apply_server_side_encryption_by_default {
+              + sse_algorithm     = "AES256"
+                # (1 unchanged attribute hidden)
+            }
+        }
+    }
+
+  # module.s3_backup.aws_s3_bucket_versioning.backup will be created
+  + resource "aws_s3_bucket_versioning" "backup" {
+      + bucket = (known after apply)
+      + id     = (known after apply)
+
+      + versioning_configuration {
+          + mfa_delete = (known after apply)
+          + status     = "Enabled"
+        }
+    }
+
+Plan: 6 to add, 0 to change, 0 to destroy.
+
+────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────
+
+Note: You didn't use the -out option to save this plan, so Terraform can't guarantee to take exactly these actions if you run "terraform apply" now.
+p@l440:~/terraform-aws/exercise-2$
+```
