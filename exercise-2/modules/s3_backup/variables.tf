@@ -1,3 +1,5 @@
+# All necessary variables for the S3 backup module, supporting configuration flexibility and reusability.
+
 variable "bucket_name" {
   type        = string
   description = "Name of the S3 bucket to be created."
@@ -27,4 +29,3 @@ variable "aws_secret_key" {
   type = string
   description = "AWS provider secret_key parameter"
 }
-

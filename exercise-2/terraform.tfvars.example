@@ -1,4 +1,4 @@
-# AWS provider 'region', 'access_key' and 'secret_key' credentials
+# AWS provider 'access_key' and 'secret_key' credentials
 main_aws_access_key = "your_access_key_id"
 main_aws_secret_key = "your_secret_key_value"
 

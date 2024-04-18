@@ -1,3 +1,4 @@
+# Variables declared for AWS access key and secret key for modular access in the provider configurations.
 
 variable "main_aws_access_key" {
   type = string

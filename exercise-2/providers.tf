@@ -1,3 +1,5 @@
+# Sets up the AWS provider with credentials and region specified in variables.
+
 terraform {
   required_providers {
     aws = {

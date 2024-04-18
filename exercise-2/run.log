@@ -1,4 +1,4 @@
-p@l440:~/terraform-aws/excercise-2$ terraform init
+p@l440:~/terraform-aws/exercise-2$ terraform init
 
 Initializing the backend...
 Initializing modules...
@@ -16,7 +16,7 @@ should now work.
 If you ever set or change modules or backend configuration for Terraform,
 rerun this command to reinitialize your working directory. If you forget, other
 commands will detect it and remind you to do so if necessary.
-p@l440:~/terraform-aws/excercise-2$ terraform plan
+p@l440:~/terraform-aws/exercise-2$ terraform plan
 module.s3_backup.data.aws_iam_policy_document.backup_policy: Reading...
 module.s3_backup.data.aws_iam_policy_document.backup_policy: Read complete after 0s [id=3352074433]
 
@@ -126,5 +126,5 @@ Plan: 6 to add, 0 to change, 0 to destroy.
 ────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────
 
 Note: You didn't use the -out option to save this plan, so Terraform can't guarantee to take exactly these actions if you run "terraform apply" now.
-p@l440:~/terraform-aws/excercise-2$
+p@l440:~/terraform-aws/exercise-2$
 

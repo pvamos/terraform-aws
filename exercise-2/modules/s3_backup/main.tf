@@ -1,3 +1,6 @@
+# To align with backup best practices:
+#   Security through encryption, access control, and lifecycle management.
+
 resource "aws_s3_bucket" "backup" {
   bucket = var.bucket_name
 }
@@ -7,6 +10,7 @@ resource "aws_s3_bucket_acl" "backup" {
   acl    = "private"
 }
 
+# Versioning enabled to protect against unintended deletions and overwrites.
 resource "aws_s3_bucket_versioning" "backup" {
   bucket = aws_s3_bucket.backup.id
   versioning_configuration {
@@ -14,6 +18,7 @@ resource "aws_s3_bucket_versioning" "backup" {
   }
 }
 
+# Lifecycle rules
 resource "aws_s3_bucket_lifecycle_configuration" "backup" {
   bucket = aws_s3_bucket.backup.id
   rule {
@@ -28,6 +33,7 @@ resource "aws_s3_bucket_lifecycle_configuration" "backup" {
   }
 }
 
+# configures server-side encryption
 resource "aws_s3_bucket_server_side_encryption_configuration" "backup" {
   bucket = aws_s3_bucket.backup.id
   rule {
@@ -37,6 +43,7 @@ resource "aws_s3_bucket_server_side_encryption_configuration" "backup" {
   }
 }
 
+# IAM policies to allow access
 data "aws_iam_policy_document" "backup_policy" {
   statement {
     actions   = ["s3:PutObject", "s3:PutObjectAcl"]
@@ -49,8 +56,8 @@ data "aws_iam_policy_document" "backup_policy" {
   }
 }
 
+# Apply IAM policies to S3 bucket
 resource "aws_s3_bucket_policy" "backup" {
   bucket = aws_s3_bucket.backup.id
   policy = data.aws_iam_policy_document.backup_policy.json
 }
-
