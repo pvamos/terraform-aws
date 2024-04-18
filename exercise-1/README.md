@@ -73,7 +73,7 @@ exercise-1/
 │   │   ├── main.tf
 │   │   ├── outputs.tf
 │   │   └── variables.tf
-│   └── vpc_endpoint
+│   ├── vpc_endpoint
 │   ├── main.tf
 │   ├── outputs.tf
 │   └── variables.tf
@@ -101,7 +101,7 @@ module "network" {
 ## Improvement Possibilities
 
 - Use AWS Secrets Manager or Hashicorp Vault to store/manage AWS credentials
-- Check if the provided VPC CIDR block and subnet sizes and numnbers are valid
+- Check if the provided VPC CIDR block and subnet sizes and numbers are valid
 - Check if the subnets all fit into the VPC CIDR block specified.
 
 ## Example Output
