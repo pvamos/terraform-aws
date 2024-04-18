@@ -54,6 +54,22 @@ module "s3_backup" {
 
 ## Example Output
 
+Tested with:
+
+```
+$ terraform --version
+Terraform v1.8.0
+on linux_amd64
++ provider registry.terraform.io/hashicorp/aws v5.45.0
+
+$ uname -a
+Linux l440.peter.local 6.8.5-201.fc39.x86_64 #1 SMP PREEMPT_DYNAMIC Thu Apr 11 18:25:26 UTC 2024 x86_64 GNU/Linux
+
+$ cat /etc/fedora-release
+Fedora release 39 (Thirty Nine)
+```
+
+### Terraform init
 ```
 p@l440:~/terraform-aws/exercise-2$ terraform init
 
@@ -73,6 +89,10 @@ should now work.
 If you ever set or change modules or backend configuration for Terraform,
 rerun this command to reinitialize your working directory. If you forget, other
 commands will detect it and remind you to do so if necessary.
+```
+
+### Terraform planS
+```
 p@l440:~/terraform-aws/exercise-2$ terraform plan
 module.s3_backup.data.aws_iam_policy_document.backup_policy: Reading...
 module.s3_backup.data.aws_iam_policy_document.backup_policy: Read complete after 0s [id=3352074433]
