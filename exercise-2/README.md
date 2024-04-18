@@ -22,7 +22,7 @@ This Terraform configuration sets up an Amazon S3 bucket designed to handle back
 ## Project Structure
 
 ```
-terraform-aws/
+exercise-2/
 ├── example_usage.tf
 ├── modules/
 │   └── s3_backup/
